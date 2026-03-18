@@ -1,0 +1,32 @@
+{
+  "records": [
+    {
+      "id": 4,
+      "name": "POST method test",
+      "description": "element updated with POST method",
+      "price": "$29.99",
+      "createdAt": "2024-06-02T12:00:00Z"
+    },
+    {
+      "id": 3,
+      "name": "PATCH method test",
+      "description": "element updated with PATCH method",
+      "price": "$39.99",
+      "createdAt": "2024-06-03T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "second element",
+      "description": "some initial element",
+      "price": "$49.99",
+      "createdAt": "2024-06-04T12:00:00Z"
+    },
+    {
+      "id": 1,
+      "name": "first element",
+      "description": "some initial element",
+      "price": "$59.99",
+      "createdAt": "2026-03-017T12:00:00Z"
+    }
+  ]
+}

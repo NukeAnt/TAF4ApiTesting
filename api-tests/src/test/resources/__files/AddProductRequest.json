@@ -1,0 +1,27 @@
+{
+  "products": [
+    {
+      "description": "Rest Assured: The Complete Guide to API Testing",
+      "type": "Course",
+      "productAttributes": [
+        {
+          "courseLength": "4 hours",
+          "courseLevel": "Beginner",
+          "courseLanguage": "English",
+          "courseCreationDate": "2024-06-01",
+          "courseInstructor": "John Doe"
+        }
+      ],
+      "price": {
+        "currency": "USD",
+        "amount": 99.99,
+        "discount": 10.00,
+        "paymentOptions": [
+          "Credit Card",
+          "PayPal",
+          "Bank Transfer"
+        ]
+      }
+    }
+  ]
+}
