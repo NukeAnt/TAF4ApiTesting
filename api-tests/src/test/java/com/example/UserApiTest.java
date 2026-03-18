@@ -81,6 +81,72 @@ public class UserApiTest {
     response.prettyPrint();
   }
 
+  // test to update existing user using PUT
+  @Test
+  void shouldUpdateUser()
+  {
+    String requestBody = "{\n" +
+        "  \"id\": 1,\n" +
+        "  \"name\": \"John Doe Updated\",\n" +
+        "  \"username\": \"johndoeupdated\",\n" +
+        "  \"email\": \"no@mail.com\"\n" +
+        "}";
+
+    Response response =
+        given()
+          .contentType("application/json")
+          .body(requestBody)
+        .when()
+          .put("/users/1")
+        .then()
+          .statusCode(200)
+          .body("id", equalTo(1))
+          .body("name", equalTo("John Doe Updated"))
+          .body("username", equalTo("johndoeupdated"))
+          .body("email", equalTo("no@mail.com"))
+        .extract().response();
+
+    response.prettyPrint();
+  }
+
+  // test to patch existing user using PATCH
+  @Test
+  void shouldPatchUser()
+  {
+    String requestBody = """
+        {
+          "name": "John Doe Patched"
+        }""";
+
+    Response response =
+        given()
+          .contentType("application/json")
+          .body(requestBody)
+        .when()
+          .patch("/users/2")
+        .then()
+          .statusCode(200)
+          .body("id", equalTo(2))
+          .body("name", equalTo("John Doe Patched"))
+        .extract().response();
+
+    response.prettyPrint();
+  }
+
+  // test to delete a user
+  @Test
+  void shouldDeleteUser()
+  {
+    Response response = given()
+        .when()
+        .delete("/users/3")
+        .then()
+        .statusCode(200)
+        .extract().response();
+
+    response.prettyPrint();
+  }
+
   // test to extract values using Jayway JsonPath
   @Test
   void shouldGetUser_usingJaywayJsonPath() {
