@@ -13,20 +13,25 @@ import java.util.List;
 import static org.testng.AssertJUnit.assertEquals;
 
 @Slf4j
-public class SoftAssertionJaywayJsonPath extends WireMockBaseTest
+public class SoftAssertionJaywayJsonPathTest extends WireMockBaseTest
 {
   @Test
   void shouldGetAllUsers()
   {
     RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
     Response response =
-        RestAssured.given()
+        RestAssured
+            .given()
+              .contentType("application/json")
+              .baseUri(RestAssured.baseURI)
             .when()
-            .get("/users")
+              .get("/users")
             .then()
-            .statusCode(200)
+              .statusCode(200)
+              .statusLine("HTTP/1.1 200 OK")
+              .header("Content-Type", "application/json; charset=utf-8")
             .extract()
-            .response();
+              .response();
 
     // response.prettyPrint();
 
@@ -84,7 +89,7 @@ public class SoftAssertionJaywayJsonPath extends WireMockBaseTest
         .when()
         .get(url);
 
-    response.prettyPrint();
+    // response.prettyPrint();
     assertEquals(200, response.getStatusCode());
 
     // Address holds a JSON array, we can get specific indexed elements using index
@@ -110,8 +115,9 @@ public class SoftAssertionJaywayJsonPath extends WireMockBaseTest
     softAssert.assertTrue(addressType1.stream().anyMatch(type -> type.equals("home")), "There should be an address of type 'home'");
     softAssert.assertTrue(addressTypes.stream().anyMatch(type -> type.equals("office")), "There should be an address of type 'office'");
     softAssert.assertTrue(addressType2.equals("old"), "The address type of the third element from second array should be 'old'");
-
     softAssert.assertTrue(secondAddressArray.stream().anyMatch(item -> item.toString().contains("456 Elm")), "The second address array should contain an address with '456 Elm'");
+
+    // Investigate this assertion later, I don't like casting.
     softAssert.assertTrue(allAddressObjects.stream()
         .map(addr -> ((LinkedHashMap<String, Object>) addr).get("streetAddress").toString())
         .anyMatch(street -> street.contains("123 Main")), "There should be an address containing '123 Main'");
