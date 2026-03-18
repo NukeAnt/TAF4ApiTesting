@@ -1,0 +1,46 @@
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "age": 25,
+  "address": [
+    [
+      {
+        "streetAddress": "21 2nd Street",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10021",
+        "type": "home"
+      },
+      {
+        "streetAddress": "123 Main Street",
+        "city": "Los Angeles",
+        "state": "CA",
+        "postalCode": "90001",
+        "type": "office"
+      }
+    ],
+    [
+      {
+        "streetAddress": "456 Elm Street",
+        "city": "Chicago",
+        "state": "IL",
+        "postalCode": "60601",
+        "type": "communication"
+      },
+      {
+        "streetAddress": "789 Oak Street",
+        "city": "Houston",
+        "state": "TX",
+        "postalCode": "77001",
+        "type": "temporary"
+      },
+      {
+        "streetAddress": "321 Pine Street",
+        "city": "Phoenix",
+        "state": "AZ",
+        "postalCode": "85001",
+        "type": "old"
+      }
+    ]
+  ]
+}

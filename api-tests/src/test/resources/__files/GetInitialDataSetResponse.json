@@ -1,0 +1,32 @@
+{
+  "records": [
+    {
+      "id": 4,
+      "name": "fourth element",
+      "description": "some initial element",
+      "price": "$29.99",
+      "createdAt": "2026-03-17T12:00:00Z"
+    },
+    {
+      "id": 3,
+      "name": "third element",
+      "description": "some initial element",
+      "price": "$39.99",
+      "createdAt": "2024-06-03T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "second element",
+      "description": "some initial element",
+      "price": "$49.99",
+      "createdAt": "2024-06-04T12:00:00Z"
+    },},
+    {
+      "id": 1,
+      "name": "first element",
+      "description": "some initial element",
+      "price": "$59.99",
+      "createdAt": "2026-03-017T12:00:00Z"
+    }
+  ]
+}
