@@ -3,6 +3,7 @@ package com.example;
 import com.example.pojoClasses.User;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.jayway.jsonpath.JsonPath;
@@ -14,6 +15,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 public class UserApiTest {
 
   // set up base URI for all tests
@@ -31,7 +33,52 @@ public class UserApiTest {
         .then()
         .statusCode(200)
         .body("id", equalTo(1))
-        .body("name", notNullValue());
+        .body("name", notNullValue())
+        .body("name", equalTo("Leanne Graham"));
+  }
+
+  @Test
+  void shouldGetUser_andVerifyFields() {
+    Response response = RestAssured
+        .given()
+        .when()
+        .get("/users/1")
+        .then()
+          .statusCode(200)
+          .body("name", equalTo("Leanne Graham"))
+        .extract().response();
+
+    response.prettyPrint();
+
+    assertTrue(response.getBody().asString().contains("id"), "Response should contain 'id' field");
+    assertTrue(response.getBody().asString().contains("name"), "Response should contain 'name' field");
+  }
+
+  // POST test to create a new user (note: this API doesn't actually create a user, it just simulates the response)
+  @Test
+  void shouldCreateUser()
+  {
+    String requestBody = "{\n" +
+        "  \"name\": \"John Doe\",\n" +
+        "  \"username\": \"johndoe\",\n" +
+        "  \"email\": \"no@mail.com\"\n" +
+        "}";
+
+    Response response =
+        given()
+          .contentType("application/json")
+          .body(requestBody)
+        .when()
+          .post("/users")
+        .then()
+          .statusCode(201)
+          .body("id", notNullValue())
+          .body("name", equalTo("John Doe"))
+          .body("username", equalTo("johndoe"))
+          .body("email", equalTo("no@mail.com"))
+        .extract().response();
+
+    response.prettyPrint();
   }
 
   // test to extract values using Jayway JsonPath
@@ -47,12 +94,12 @@ public class UserApiTest {
             .extract()
             .asString();
 
-    System.out.println("Got response: " + response);
+    log.info("Got response: " + response);
 
     int id = JsonPath.parse(response).read("$.id");
     String name = JsonPath.parse(response).read("$.name");
 
-    System.out.println("id: " + id + ", name: " + name);
+    log.info("id: " + id + ", name: " + name);
 
     assertEquals(1, id);
     assertTrue(name != null && !name.isEmpty());
@@ -73,7 +120,7 @@ public class UserApiTest {
 
     ObjectMapper mapper = new ObjectMapper();
     JsonNode json = mapper.readTree(response);
-    System.out.println("Got JSON: " + json);
+    log.info("Got JSON: " + json);
 
     int id = json.get("id").asInt();
     String name = json.get("name").asText();
@@ -93,7 +140,7 @@ public class UserApiTest {
         .extract()
         .as(User.class);
 
-    System.out.println("Got user: id=" + user.getId() + ", name=" + user.getName());
+    log.info("Got user: id=" + user.getId() + ", name=" + user.getName());
 
     assertEquals(1, user.getId());
     assertTrue(user.getName() != null && !user.getName().isEmpty());
@@ -116,7 +163,7 @@ public class UserApiTest {
     int id = JsonPath.parse(response.asString()).read("$.[8].id"); // get the id of the 9th user (index 8)
     String name = JsonPath.parse(response.asString()).read("$.[8].name"); // get the name of the 9th user
 
-    System.out.println("id: " + id + ", name: " + name);
+    log.info("id: " + id + ", name: " + name);
 
     assertEquals(9, id);
     assertTrue(name != null && !name.isEmpty());
@@ -134,7 +181,7 @@ public class UserApiTest {
         .extract()
         .asString();
 
-    System.out.println("Got response for non-existent user: " + response);
+    log.info("Got response for non-existent user: " + response);
     assertTrue(response.isEmpty() || response.equals("{}"), "Expected empty response for non-existent user");
   }
 }
