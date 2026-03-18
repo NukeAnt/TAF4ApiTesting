@@ -10,6 +10,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,6 +33,7 @@ public class UserApiTest {
         .get("/users/1")
         .then()
         .statusCode(200)
+        .body(not(emptyString()))
         .body("id", equalTo(1))
         .body("name", notNullValue())
         .body("name", equalTo("Leanne Graham"));
@@ -249,5 +251,34 @@ public class UserApiTest {
 
     log.info("Got response for non-existent user: " + response);
     assertTrue(response.isEmpty() || response.equals("{}"), "Expected empty response for non-existent user");
+  }
+
+  @Test
+  void shouldGetPostsForUserId()
+  {
+    RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
+
+    Response response = given()
+        .when()
+        .get("/posts?userId=1")
+        .then()
+        .statusCode(200)
+        .body("$", not(empty()))
+        .body("userId", everyItem(equalTo(1))) // verify that all posts have userId 1
+        .extract().response();
+
+    response.prettyPrint();
+
+    List<Integer> userIds = JsonPath.parse(response.asString()).read("$.[*].userId");
+    assertTrue(userIds.stream().allMatch(id -> id ==1), "All posts should have userId 1");
+
+    // Znajdź post o id = 5 i sprawdź, że jego title nie jest pusty
+    String postTitle = JsonPath.parse(response.asString()).read("$.[?(@.id == 5)].title").toString();
+    log.info("Title of post with id 5: " + postTitle);
+    assertTrue(postTitle != null && !postTitle.isEmpty(), "Title of post with id 5 should not be null or empty");
+
+    // $.[?(@.id == 5)]  -- From root → take only direct children where id == 5
+    // .title -- take value from field title of the found post
+
   }
 }
