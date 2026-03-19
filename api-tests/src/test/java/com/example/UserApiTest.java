@@ -32,11 +32,11 @@ public class UserApiTest {
         .when()
         .get("/users/1")
         .then()
-        .statusCode(200)
-        .body(not(emptyString()))
-        .body("id", equalTo(1))
-        .body("name", notNullValue())
-        .body("name", equalTo("Leanne Graham"));
+          .statusCode(200)
+          .body(not(emptyString()))
+          .body("id", equalTo(1))
+          .body("name", notNullValue())
+          .body("name", equalTo("Leanne Graham"));
   }
 
   @Test
@@ -260,7 +260,7 @@ public class UserApiTest {
 
     Response response = given()
         .when()
-        .get("/posts?userId=1")
+        .get("/posts?userId=1")// query parameter to filter posts by userId /post?userId1&&id=2
         .then()
         .statusCode(200)
         .body("$", not(empty()))
