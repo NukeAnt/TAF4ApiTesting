@@ -25,6 +25,13 @@ public class StreamTest
         .toList();  // Dawniej: .collect(Collectors.toList());
     System.out.println("Liczby parzyste: " + evenNumbers); // Wynik: [2, 4]
 
+    // liczby nieparzyste
+    List<Integer> oddNumbers = numbers
+        .stream()
+        .filter(n -> n % 2 != 0)
+        .toList();
+    System.out.println("Liczby nieparzyste: " + oddNumbers); // Wynik: [1, 3, 5]
+
     // 3. Sprawdź czy lista zawiera 3
     boolean containsThree = numbers.contains(3);
     System.out.println("Lista zawiera 3: " + containsThree); // Wynik: true
