@@ -262,9 +262,9 @@ public class UserApiTest {
         .when()
         .get("/posts?userId=1")// query parameter to filter posts by userId /post?userId1&&id=2
         .then()
-        .statusCode(200)
-        .body("$", not(empty()))
-        .body("userId", everyItem(equalTo(1))) // verify that all posts have userId 1
+          .statusCode(200)
+          .body("$", not(empty()))
+          .body("userId", everyItem(equalTo(1))) // verify that all posts have userId 1
         .extract().response();
 
     response.prettyPrint();
