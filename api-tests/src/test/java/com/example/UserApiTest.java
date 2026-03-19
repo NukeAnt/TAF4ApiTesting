@@ -74,6 +74,7 @@ public class UserApiTest {
           .post("/users")
         .then()
           .statusCode(201)
+          .body("$", not(emptyString()))
           .body("id", notNullValue())
           .body("name", equalTo("John Doe"))
           .body("username", equalTo("johndoe"))
@@ -263,7 +264,7 @@ public class UserApiTest {
         .get("/posts?userId=1")// query parameter to filter posts by userId /post?userId1&&id=2
         .then()
           .statusCode(200)
-          .body("$", not(empty()))
+          .body("$", not(empty())) // is body not empty
           .body("userId", everyItem(equalTo(1))) // verify that all posts have userId 1
         .extract().response();
 
