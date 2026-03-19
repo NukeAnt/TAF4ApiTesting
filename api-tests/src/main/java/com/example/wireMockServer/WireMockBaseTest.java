@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WireMockBaseTest
 {
-  private static String PROTOCOL = "http";
-  private static String HOST = "localhost";
+  private static final String PROTOCOL = "http";
+  private static final String HOST = "localhost";
 
   private WireMockServer wireMockServer;
 
@@ -37,7 +37,7 @@ public class WireMockBaseTest
         .willReturn(WireMock.aResponse()
             .withStatus(200)
             .withHeader("Content-Type", "application/json")
-            .withBodyFile("GetInitialDataSetResponse.json") // files in __files directory)
+            .withBodyFile("GetInitialDataSetResponse.json") // files in __files directory
         ));
   }
 
