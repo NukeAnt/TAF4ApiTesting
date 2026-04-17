@@ -2,7 +2,7 @@ package com.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class HerokuappLogin
+public class HerokuappLoginPage
 {
   private WebDriver driver;
 
@@ -12,7 +12,7 @@ public class HerokuappLogin
   private By loginButton = By.xpath("//button[@type='submit']");
   private By flashMessage = By.id("flash");
 
-  public HerokuappLogin(WebDriver driver) {
+  public HerokuappLoginPage(WebDriver driver) {
     this.driver = driver;
   }
 

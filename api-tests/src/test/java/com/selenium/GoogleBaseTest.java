@@ -102,7 +102,7 @@ public class GoogleBaseTest extends BaseTest
     By loginButton = By.xpath("//button[@type='submit']");
     By message = By.id("flash");
 
-    // zawsze czekamy, zanim zaczniemy wpisywacc do pola, bo może się zdarzyć, że strona będzie się jeszcze ładować i elementy nie będą od razu dostępne
+    // zawsze czekamy, zanim zaczniemy wpisywac do pola, bo może się zdarzyć, że strona będzie się jeszcze ładować i elementy nie będą od razu dostępne
     wait.until(ExpectedConditions.visibilityOfElementLocated(username));
     driver.findElement(username).sendKeys("tomsmith");
     driver.findElement(password).sendKeys("SuperSecretPassword!");
