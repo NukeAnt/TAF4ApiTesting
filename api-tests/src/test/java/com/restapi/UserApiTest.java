@@ -1,4 +1,4 @@
-package com.example;
+package com.restapi;
 
 import com.example.pojoClasses.User;
 import io.restassured.RestAssured;

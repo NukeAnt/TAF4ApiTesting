@@ -1,4 +1,4 @@
-package com.example;
+package com.restapi;
 
 import com.example.pojoClasses.ExchangeRateRangeResponse;
 import com.example.pojoClasses.ExchangeRateResponse;
