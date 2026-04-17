@@ -1,4 +1,4 @@
-package com.example;
+package com.restapi;
 
 import com.example.wireMockServer.WireMockBaseTest;
 import com.github.tomakehurst.wiremock.client.WireMock;

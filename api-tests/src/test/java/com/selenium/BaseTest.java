@@ -4,7 +4,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import java.nio.file.Paths;
 
-class TestSetup
+class BaseTest
 {
   WebDriver driver;
   private static String getDriverPath() {

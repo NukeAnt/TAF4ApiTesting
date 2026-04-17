@@ -1,7 +1,8 @@
-package com.example;
+package com.restapi;
 
 import org.junit.jupiter.api.Test;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StreamTest
 {
@@ -9,8 +10,28 @@ public class StreamTest
   @Test
   void streamTest()
   {
-    List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+     // Mapa userów zawierająca imię i wiek
+    List<User> users = List.of(new User("John", 30), new User("Anna", 25), new User("Michael", 35));
+    Map<String, Integer> userAgeMap = users.stream().collect(Collectors.toMap(User::getName, User::getAge));
+    System.out.println("Mapa użytkowników: " + userAgeMap);
 
+    User olderThan30 = users.stream()
+        .filter(user -> user.getAge() > 30)
+        .findFirst()
+        .orElse(null);
+    System.out.println("Użytkownik starszy niż 30 lat: " + olderThan30.getName()); // Wynik: Michael
+    if(olderThan30 == null) {
+      System.out.println("Nie znaleziono użytkownika starszego niż 30 lat");
+    }
+
+    // Optional is better than null because it forces us to handle the case when there is no value, instead of risking a NullPointerException. It provides methods like isPresent(), orElse(), orElseThrow() to deal with the absence of a value in a more controlled way.
+    Optional<User> user = users.stream()
+        .filter(u -> u.getAge() > 18)
+        .findFirst();
+    System.out.println("Użytkownik starszy niż 18 lat: " + user.orElseThrow().getName()); // Wynik: John
+
+
+    List<Integer> numbers = List.of(1, 2, 3, 4, 5);
     // 1. Znajdź sumę (suma wszystkich elementów)
     int sum = numbers
         .stream()
@@ -31,6 +52,26 @@ public class StreamTest
         .filter(n -> n % 2 != 0)
         .toList();
     System.out.println("Liczby nieparzyste: " + oddNumbers); // Wynik: [1, 3, 5]
+
+    List<Integer> numberTwo = numbers
+        .stream()
+        .filter(n -> n == 2)
+        .toList();
+    System.out.println("Liczba 2: " + numberTwo); // Wynik
+
+    Integer firstNumberTwo = numbers
+        .stream()
+        .filter(n -> n == 2)
+        .findFirst()
+        .orElse(null); // lub .orElseThrow() jeśli chcemy wyjątek
+    System.out.println("Pierwsza liczba 2: " + firstNumberTwo); // Wynik: 2
+
+    Integer firstNumberGreaterThanThree = numbers
+        .stream()
+        .filter(n -> n > 3)
+        .findFirst()
+        .orElse(null);
+    System.out.println("Pierwsza liczba większa niż 3: " + firstNumberGreaterThanThree); // Wynik: 4
 
     // 3. Sprawdź czy lista zawiera 3
     boolean containsThree = numbers.contains(3);
@@ -92,5 +133,24 @@ public class StreamTest
         .filter(name -> names.stream().filter(n -> n.equals(name)).count() == 1)
         .toList();
     System.out.println("Unikalne imiona: " + uniqueNames); // Wynik: [anna, michael]
+  }
+
+  private class User
+  {
+    private String name;
+    private int age;
+
+    public User(String name, int age) {
+      this.name = name;
+      this.age = age;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public int getAge() {
+      return age;
+    }
   }
 }
