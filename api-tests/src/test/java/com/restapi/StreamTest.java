@@ -11,7 +11,8 @@ public class StreamTest
   void streamTest()
   {
      // Mapa userów zawierająca imię i wiek
-    List<User> users = List.of(new User("John", 30), new User("Anna", 25), new User("Michael", 35));
+    List<User> users = List.of(new User("John", 30), new User("Anna", 25)
+        , new User("Michael", 35), new User("Eve", 15));
     Map<String, Integer> userAgeMap = users.stream().collect(Collectors.toMap(User::getName, User::getAge));
     System.out.println("Mapa użytkowników: " + userAgeMap);
 
@@ -30,6 +31,10 @@ public class StreamTest
         .findFirst();
     System.out.println("Użytkownik starszy niż 18 lat: " + user.orElseThrow().getName()); // Wynik: John
 
+    Optional<List<User>> usersOlderThan20 = Optional.of(users.stream()
+        .filter(u -> u.getAge() > 20)
+        .toList());
+    System.out.println("Użytkownicy starsi niż 20 lat: " + usersOlderThan20.orElseThrow().stream().map(User::getName).toList()); // Wynik: [John, Anna, Michael]
 
     List<Integer> numbers = List.of(1, 2, 3, 4, 5);
     // 1. Znajdź sumę (suma wszystkich elementów)
@@ -42,7 +47,7 @@ public class StreamTest
     // 2. Znajdź liczby parzyste
     List<Integer> evenNumbers = numbers
         .stream()
-        .filter(n -> n % 2 == 0)
+        .filter(n -> n % 2 == 0) // operator modulo z reszty dzielenia
         .toList();  // Dawniej: .collect(Collectors.toList());
     System.out.println("Liczby parzyste: " + evenNumbers); // Wynik: [2, 4]
 
@@ -108,7 +113,7 @@ public class StreamTest
         .allMatch(n -> n > 0);
     System.out.println("Wszystkie liczby są większe od 0: " + allGreaterThanZero); // Wynik: true
 
-        List<String> names = List.of("john", "anna", "john", "michael");
+    List<String> names = List.of("john", "anna", "john", "michael");
     // zamień wszystkie imiona na wielkie litery
     List<String> upperCaseNames = names.stream()
         .map(String::toUpperCase)
