@@ -1,8 +1,7 @@
 package com.selenium;
 
-import com.pages.HerokuappDynamicControls;
-import com.pages.HerokuappLogin;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import com.pages.HerokuappDynamicControlsPage;
+import com.pages.HerokuappLoginPage;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 import static org.testng.Assert.assertTrue;
@@ -13,7 +12,7 @@ public class HerokuappTest extends BaseTest
   void testLogin()
   {
     driver = setup();
-    HerokuappLogin loginPage = new HerokuappLogin(driver);
+    HerokuappLoginPage loginPage = new HerokuappLoginPage(driver);
     loginPage.open();
     loginPage.login("tomsmith", "SuperSecretPassword!");
     String flashMessage = loginPage.getFlashMessage();
@@ -24,7 +23,7 @@ public class HerokuappTest extends BaseTest
   void testLoginWithInvalidCredentials()
   {
     driver = setup();
-    HerokuappLogin loginPage = new HerokuappLogin(driver);
+    HerokuappLoginPage loginPage = new HerokuappLoginPage(driver);
     loginPage.open();
     loginPage.login("invalidUser", "invalidPass");
     String flashMessage = loginPage.getFlashMessage();
@@ -35,7 +34,7 @@ public class HerokuappTest extends BaseTest
   void testDynamicControls()
   {
     driver = setup();
-    HerokuappDynamicControls dynamicControlsPage = new HerokuappDynamicControls(driver);
+    HerokuappDynamicControlsPage dynamicControlsPage = new HerokuappDynamicControlsPage(driver);
     dynamicControlsPage.open();
     dynamicControlsPage.clickRemoveButton();
     dynamicControlsPage.waitForCheckboxToDisappear();

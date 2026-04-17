@@ -6,10 +6,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
-public class HerokuappDynamicControls
+public class HerokuappDynamicControlsPage
 {
   private WebDriver driver;
-  public HerokuappDynamicControls(WebDriver driver) {
+  public HerokuappDynamicControlsPage(WebDriver driver) {
     this.driver = driver;
   }
 
