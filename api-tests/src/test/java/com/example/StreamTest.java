@@ -47,5 +47,50 @@ public class StreamTest
         .map(Integer::doubleValue)
         .toList();
     System.out.println("Lista double'ów: " + doubleList);
+
+    // 6. Znajdź największą liczbę
+    int max = numbers.stream()
+        .mapToInt(Integer::intValue)
+        .max()
+        .orElseThrow(); // lub .orElse(0) jeśli chcemy domyślną wartość
+    System.out.println("Największa liczba: " + max); // Wynik: 5
+
+    // znajdź sumę liczb parzystych
+    int sumEven = numbers.stream()
+        .filter(n -> n % 2 == 0)
+        .mapToInt(Integer::intValue)
+        .sum();
+    System.out.println("Suma liczb parzystych: " + sumEven); // Wynik: 6
+
+    // sprawdź, czy wszystkie są większe od 0
+    boolean allGreaterThanZero = numbers.stream()
+        .allMatch(n -> n > 0);
+    System.out.println("Wszystkie liczby są większe od 0: " + allGreaterThanZero); // Wynik: true
+
+        List<String> names = List.of("john", "anna", "john", "michael");
+    // zamień wszystkie imiona na wielkie litery
+    List<String> upperCaseNames = names.stream()
+        .map(String::toUpperCase)
+        .toList();
+    System.out.println("Imiona wielkimi literami: " + upperCaseNames); // Wynik: [JOHN, ANNA]
+
+    // zamień pierwsze litery na wielkie
+    List<String> capitalizedNames = names.stream()
+        .map(name -> name.substring(0, 1).toUpperCase() + name.substring(1))
+        .toList();
+    System.out.println("Imiona z wielką pierwszą literą: " + capitalizedNames); // Wynik: [John, Anna]
+
+    // znajdź duplikaty
+    List<String> duplicates = names.stream()
+        .filter(name -> names.stream().filter(n -> n.equals(name)).count() > 1)
+        .distinct()
+        .toList();
+    System.out.println("Duplikaty: " + duplicates); // Wynik: [john]
+
+    // znajdź unikalne imiona
+    List<String> uniqueNames = names.stream()
+        .filter(name -> names.stream().filter(n -> n.equals(name)).count() == 1)
+        .toList();
+    System.out.println("Unikalne imiona: " + uniqueNames); // Wynik: [anna, michael]
   }
 }

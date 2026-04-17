@@ -10,7 +10,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.List;
+import java.util.*;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,6 +37,25 @@ public class UserApiTest {
           .body("id", equalTo(1))
           .body("name", notNullValue())
           .body("name", equalTo("Leanne Graham"));
+  }
+
+  @Test
+  void shouldGetUsers() {
+    Response response = given()
+        .when()
+        .get("/users")
+        .then()
+          .statusCode(200)
+          .body(not(emptyString())).extract().response();
+    response.prettyPrint();
+
+    // Find a user with max id using Java Stream API
+    List<Map<String, Object>> users = response.jsonPath().getList(""); // JsonPath.parse(response.asString()).read("$.[*]");
+    // System.out.println(users.get(0)); // print first user
+
+    Map<String, Object> userMaxId = users.stream().max(Comparator.comparing(user -> (Integer) user.get("id"))).orElseThrow();
+    log.info("User with max id: " + userMaxId.get("id") + ", name: " + userMaxId.get("name"));
+
   }
 
   @Test
@@ -217,7 +236,7 @@ public class UserApiTest {
 
 
   @Test
-  void shouldGetAllUsers_usingJsonPath() throws Exception {
+  void shouldGetAllUsers_usingJsonPath() {
 
     Response response =
         given()
