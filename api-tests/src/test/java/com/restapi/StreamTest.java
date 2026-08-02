@@ -10,6 +10,12 @@ public class StreamTest
   @Test
   void streamTest()
   {
+    List<String> namesList = new ArrayList<>();
+    namesList.add("John");
+    namesList.add("Anna");
+    namesList.add("Michael");
+    namesList.add("Eve");
+
      // Mapa userów zawierająca imię i wiek
     List<User> users = List.of(new User("John", 30), new User("Anna", 25)
         , new User("Michael", 35), new User("Eve", 15));
