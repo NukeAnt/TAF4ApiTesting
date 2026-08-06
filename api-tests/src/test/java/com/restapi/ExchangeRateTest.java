@@ -6,7 +6,7 @@ import io.restassured.RestAssured;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.Map;
+import java.util.*;
 import static io.restassured.RestAssured.given;
 import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertTrue;
@@ -111,5 +111,61 @@ public class ExchangeRateTest
     Double bestRate = bestRateEntry.getValue();
 
     System.out.println("Best GBP -> USD rate: " + bestRate + " on " + bestDate);
+  }
+
+  @Test
+  void shouldTestCodeInside()
+  {
+    List<String> emails = Arrays.asList(
+        "john@test.com",
+        "kate@test.com",
+        "john@test.com"
+    );
+
+    Set<String> uniqueEmails =
+        new HashSet<>(emails);
+
+    if (uniqueEmails.size() == emails.size())
+    {
+      System.out.println("No duplicates");
+    }
+    else
+    {
+      System.out.println("Duplicates found");
+    }
+
+    List<String> emailz = new ArrayList<>();
+    emailz.add("john@test.com");
+    emailz.add("kate@test.com");
+    emailz.add("john2@test.com");
+
+    // wywali ConcurrentModificationException, bo nie można usuwać elementów z listy podczas iteracji po niej
+/*    for (String email : emailz)
+    {
+      if (email.startsWith("john"))
+      {
+        emailz.remove(email);
+      }
+    }
+
+    System.out.println(emailz);*/
+
+    List<String> emails2 = new ArrayList<>();
+
+    emails2.add("john@test.com");
+    emails2.add("kate@test.com");
+    emails2.add("john2@test.com");
+
+    List<String> filtered =
+        emails2.stream()
+            .filter(email ->
+                !email.startsWith("john"))
+            .toList();
+
+    emails2.removeIf(
+        email -> email.startsWith("john")
+    );
+    System.out.println(emails2);
+    System.out.println(filtered);
   }
 }
