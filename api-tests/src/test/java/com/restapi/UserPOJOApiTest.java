@@ -1,6 +1,6 @@
 package com.restapi;
 
-import com.example.pojoClasses.User;
+import com.example.pojoClasses.UserPOJO;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class UserApiTest {
+public class UserPOJOApiTest
+{
 
   // set up base URI for all tests
   @BeforeEach
@@ -50,7 +51,9 @@ public class UserApiTest {
     response.prettyPrint();
 
     // Find a user with max id using Java Stream API
-    List<Map<String, Object>> users = response.jsonPath().getList(""); // JsonPath.parse(response.asString()).read("$.[*]");
+    List<Map<String, Object>> users = response.jsonPath().getList("");
+
+    // JsonPath.parse(response.asString()).read("$.[*]");
     // System.out.println(users.get(0)); // print first user
 
     Map<String, Object> userMaxId = users.stream().max(Comparator.comparing(user -> (Integer) user.get("id"))).orElseThrow();
@@ -142,6 +145,7 @@ public class UserApiTest {
 
     Response response =
         given()
+            .header("Authorization", "Bearer someToken")
           .contentType("application/json")
           .body(requestBody)
         .when()
@@ -220,18 +224,18 @@ public class UserApiTest {
   @Test
   void shouldGetUser_usingPOJO() {
 
-    User user = given()
+    UserPOJO userPOJO = given()
         .when()
         .get("/users/1")
         .then()
         .statusCode(200)
         .extract()
-        .as(User.class);
+        .as(UserPOJO.class);
 
-    log.info("Got user: id=" + user.getId() + ", name=" + user.getName());
+    log.info("Got user: id=" + userPOJO.getId() + ", name=" + userPOJO.getName());
 
-    assertEquals(1, user.getId());
-    assertTrue(user.getName() != null && !user.getName().isEmpty());
+    assertEquals(1, userPOJO.getId());
+    assertTrue(userPOJO.getName() != null && !userPOJO.getName().isEmpty());
   }
 
 
