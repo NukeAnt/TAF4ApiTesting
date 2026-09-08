@@ -1,0 +1,504 @@
+JAVA CONSTRUCTORS
+================
+
+1. WHAT IS A CONSTRUCTOR?
+--------------------------
+A constructor is a special part of a Java class used to create and initialize
+a new object.
+
+Example:
+
+public class Person {
+
+    private String name;
+
+    public Person(String name) {
+        this.name = name;
+    }
+}
+
+Usage:
+
+Person person = new Person("Jan");
+
+The 'new' keyword creates a new Person object and invokes a matching
+constructor.
+
+
+2. HOW TO RECOGNIZE A CONSTRUCTOR
+---------------------------------
+A constructor:
+
+- has exactly the same name as the class,
+- has NO return type,
+- can have parameters,
+- is invoked when an object is created with 'new'.
+
+Example:
+
+public class Person {
+
+    public Person(String name) {
+    }
+}
+
+'Person(String name)' is a constructor because its name is exactly 'Person'
+and it has no return type.
+
+Compare:
+
+public Person(String name) { }       // constructor
+public void setName(String name) { } // method
+public String getName() { }          // method
+
+Quick interview rule:
+SAME NAME AS CLASS + NO RETURN TYPE = CONSTRUCTOR
+
+
+3. CONSTRUCTOR WITH PARAMETERS
+------------------------------
+A constructor can receive parameters just like a method.
+
+public class Person {
+
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+
+Usage:
+Person person = new Person("Jan", 43);
+
+The arguments are passed to the constructor, which initializes the object's
+fields.
+
+
+4. WHAT DOES 'this' MEAN?
+-------------------------
+Consider:
+
+public class Value {
+
+    private int id;
+
+    public Value(int id) {
+        this.id = id;
+    }
+}
+
+There are two things called 'id':
+
+- 'this.id' = the field belonging to the current object
+- 'id'      = the constructor parameter
+
+Therefore:  this.id = id;
+
+means:      "Set the id field of this object to the value received in the id parameter."
+
+The parameter does not have to have the same name:
+
+public Value(int value) {
+    this.id = value;
+}
+
+This is equivalent, although using the same name for the parameter and field
+is a very common Java convention.
+
+
+5. A CONSTRUCTOR CAN CONTAIN LOGIC
+----------------------------------
+A constructor can do more than simply assign fields.
+
+For example, it can validate input:
+
+public class User {
+
+    private String name;
+    private int age;
+
+    public User(String name, int age) {
+
+        if (age < 0) {
+            throw new IllegalArgumentException("Age cannot be negative");
+        }
+
+        this.name = name;
+        this.age = age;
+    }
+}
+
+This prevents creation of a User object with an invalid age.
+
+General idea:
+A constructor can ensure that a newly created object starts in a valid state.
+
+
+6. DO NOT CALL OVERRIDABLE METHODS FROM CONSTRUCTORS
+----------------------------------------------------
+Technically, a constructor can call methods.
+
+However, calling methods that can be overridden by a subclass from a
+constructor is generally dangerous.
+
+The superclass constructor may execute before the subclass has been fully
+initialized.
+
+Interview-level rule:
+Constructor can contain logic, but calling overridable methods from a
+constructor can cause initialization problems.
+
+
+7. WHAT HAPPENS IF NO CONSTRUCTOR IS WRITTEN?
+---------------------------------------------
+If a class has no constructor at all, Java provides a default
+no-argument constructor.
+
+Example:
+public class Person {
+    private String name;
+}
+
+Java effectively provides:
+
+public Person() {
+}
+
+Therefore this works:
+
+Person person = new Person();
+
+IMPORTANT:
+As soon as you write any constructor yourself, Java no longer automatically
+provides the no-argument constructor.
+
+Example:
+public class Person {
+
+    private String name;
+
+    public Person(String name) {
+        this.name = name;
+    }
+}
+
+This works:
+Person person = new Person("Jan");
+
+But this does NOT compile:
+Person person = new Person();
+
+If a no-argument constructor is needed, it must be written explicitly:
+public Person() {
+}
+
+public Person(String name) {
+    this.name = name;
+}
+
+8. CONSTRUCTOR OVERLOADING
+--------------------------
+A class can have multiple constructors with different parameter lists.
+
+Example:
+
+public class Person {
+
+    private String name;
+    private int age;
+
+    public Person() {
+        this.name = "Unknown";
+        this.age = 0;
+    }
+
+    public Person(String name) {
+        this.name = name;
+        this.age = 0;
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+
+All of these are valid:
+
+Person p1 = new Person();
+Person p2 = new Person("Jan");
+Person p3 = new Person("Jan", 43);
+
+Java chooses the constructor based on the number and types of arguments.
+This is called constructor overloading.
+
+
+9. 'this(...)' - CALLING ANOTHER CONSTRUCTOR
+--------------------------------------------
+A constructor can call another constructor in the same class using
+'this(...)'.
+
+Example:
+
+public class Person {
+
+    private String name;
+    private int age;
+
+    public Person() {
+        this("Unknown", 0);
+    }
+
+    public Person(String name) {
+        this(name, 0);
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+
+'this("Unknown", 0)' means:
+"Call another constructor of this same class."
+
+IMPORTANT:
+A call to this(...) must be the FIRST statement in the constructor.
+
+This is invalid:
+public Person() {
+    System.out.println("Hello");
+    this("Unknown", 0);
+}
+
+
+10. 'super(...)' - CALLING A PARENT CONSTRUCTOR
+-----------------------------------------------
+When inheritance is involved, a constructor can call a superclass constructor
+using 'super(...)'.
+
+Example:
+class Animal {
+
+    protected String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+}
+
+class Dog extends Animal {
+
+    public Dog(String name) {
+        super(name);
+    }
+}
+
+'super(name)' means:
+
+"Call the constructor of the parent class (Animal)."
+
+Like this(...), super(...) must be the first statement in the constructor.
+
+Conceptually:
+
+new Dog("Rex")
+    |
+    v
+Dog(String name)
+    |
+    +-- super(name)
+            |
+            v
+       Animal(String name)
+
+
+11. PRIVATE CONSTRUCTORS
+------------------------
+A constructor can be private.
+
+Example:
+
+public class Database {
+
+    private Database() {
+    }
+}
+
+Code outside the class cannot do:
+
+new Database();
+
+One classic use for a private constructor is a Singleton implementation.
+
+Private constructors are also useful when object creation should be controlled
+by static factory methods or other mechanisms.
+
+
+12. CONSTRUCTOR VS METHOD
+-------------------------
+Constructor:
+
+public Person(String name) {
+    this.name = name;
+}
+
+- same name as the class
+- no return type
+- used during object creation
+- cannot return a value
+
+Method:
+
+public String getName() {
+    return name;
+}
+
+- has its own method name
+- has a return type ('String' here)
+- can be called after the object has been created
+- can return a value
+
+A constructor is NOT a method, even though its syntax looks similar.
+
+
+13. 'return' IN A CONSTRUCTOR
+-----------------------------
+A constructor cannot return a value.
+
+This is invalid:
+
+public Person() {
+    return something;
+}
+
+However, a constructor can technically contain:
+
+return;
+
+This simply exits the constructor early.
+
+In normal code, it is usually better to validate input and throw an exception
+rather than create a partially initialized object.
+
+
+14. 'var' AND CONSTRUCTORS
+--------------------------
+This is an important Java interview trap.
+'var' can be used for local variable declarations:
+
+var value = new Value(123);
+
+The compiler infers that 'value' is a Value.
+'var' cannot be used as the type of a constructor or method parameter.
+
+This is valid:
+var value = new Value(123);
+
+This is valid:
+public Value(int id) {
+    this.id = id;
+}
+
+This is INVALID:
+public Value(var id) {
+    this.id = id;
+}
+
+The last example does not compile.
+
+Important:
+'var' does NOT mean "dynamic type".
+
+Java remains statically typed.
+
+For example:
+var id = 10;       // inferred type: int
+var name = "John"; // inferred type: String
+
+'var' is primarily syntactic sugar for local variable declarations.
+
+
+15. THE ORIGINAL EXAMPLE
+------------------------
+Correct version:
+
+public class Value {
+
+    private int id;
+
+    public Value(int id) {
+        this.id = id;
+    }
+
+    public int getValue() {
+        return id;
+    }
+}
+
+Usage:
+
+Value value = new Value(123);
+
+int result = value.getValue();
+
+Result:
+
+123
+
+Breakdown:
+
+public class Value
+    -> class definition
+
+private int id
+    -> object field
+
+public Value(int id)
+    -> constructor
+
+this.id = id
+    -> copy constructor parameter into object field
+
+public int getValue()
+    -> method returning int
+
+return id
+    -> return the field value
+
+
+16. INTERVIEW QUICK REFERENCE
+-----------------------------
+When analyzing Java code, ask:
+
+1. Is this a class definition?
+2. Is this a field?
+3. Does this have the same name as the class and no return type?
+   -> If yes, it is probably a constructor.
+4. Is 'new' being used?
+   -> A constructor will be selected and invoked.
+5. Is 'this.field' being used?
+   -> It refers to the current object's field.
+6. Is 'this(...)' being used?
+   -> It calls another constructor in the same class.
+7. Is 'super(...)' being used?
+   -> It calls a superclass constructor.
+8. Did the class define any constructor?
+   -> If yes, do not assume Java also provides a no-argument constructor.
+9. Is 'var' being used?
+   -> Check that it is a local variable declaration, not a field or parameter.
+
+Most important rules to remember:
+
+- Constructor name = class name.
+- Constructor has no return type.
+- 'new' creates an object and invokes a matching constructor.
+- 'this.field' refers to the current object's field.
+- 'this(...)' calls another constructor in the same class.
+- 'super(...)' calls a parent-class constructor.
+- If you define a constructor, Java does not automatically add a no-argument
+  constructor.
+- 'var' is allowed for local variables, NOT constructor/method parameters.

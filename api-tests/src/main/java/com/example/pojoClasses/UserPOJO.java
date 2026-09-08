@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 // POJO = Plain Old Java Object
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User
+public class UserPOJO
 {
     private int id;
     private String name;

@@ -16,6 +16,14 @@ public class StreamTest
     namesList.add("Michael");
     namesList.add("Eve");
 
+    // immutable list implementation
+    List<String> list = List.of("A", "B", "C");
+    list.add("D"); // This will throw an UnsupportedOperationException because List.of() returns an immutable list
+
+    List<String> list2 = new ArrayList<>(List.of("A", "B", "C"));
+    list2.add("D"); // This will work because list2 is a mutable ArrayList
+
+
      // Mapa userów zawierająca imię i wiek
     List<User> users = List.of(new User("John", 30), new User("Anna", 25)
         , new User("Michael", 35), new User("Eve", 15));
